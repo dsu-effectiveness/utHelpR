@@ -1,0 +1,43 @@
+---
+title: "Changing the get_data_from_sql function"
+output: html_document
+date: '2022-06-29'
+---
+
+The function `get_data_from_sql_file` should be altered so that we can use it to pull from sql files that are located in non-standard places in a project. The utHelpR package assumes that the project has a directory structure where SQL scripts are located in the same directory as the .Rproj file. Please alter the function to accommodate non-standard use cases.
+
+### Current code
+
+
+```{r eval = FALSE}
+get_data_from_sql_file <- function(file_name, dsn) {
+  conn <- get_connection_object(dsn)
+  query <- read_file( here::here('sql', file_name) )
+  df <- dbGetQuery(conn, query) %>%
+    mung_dataframe()
+  return(df)
+}
+```
+
+### Suggested fix
+
+```{r eval = FALSE}
+get_data_from_sql_file <- function(file_name, dsn, standard = TRUE) {
+  
+  conn <- get_connection_object(dsn)
+  
+  # caputure query
+  if (standard == TRUE) {
+    query <- read_file( here::here('sql', file_name) )
+  } else {
+    query <- read_file( file_name )
+  }
+  
+  query <- read_file( sql_file )
+  df <- dbGetQuery(conn, query) %>%
+    mung_dataframe()
+  return(df)
+}
+```
+
+
