@@ -29,3 +29,18 @@ save_data_as_file <- function(input_df, file_name, delim="|", with_header=FALSE,
                quote = quote )
   return( NULL )
 }
+
+
+#' Save Data as Pin
+#'
+#' @param input_df A Data Frame. Note: can contain any arbitrary data fields.
+#' @param pin_name The name of the pin to be saved.
+#'
+#' @return Returns nothing.
+#' @export
+#'
+save_data_as_pin <- function(input_df, pin_name) {
+  pins_board <- get_pins_connection_object()
+  pins::pin_write(pins_board, input_df, pin_name)
+  return( NULL )
+}

@@ -25,11 +25,9 @@ mung_dataframe <- function(df) {
 #' @return a dataframe containing the results of your sql query
 #' @export
 #'
-#'
-#'
 get_data_from_sql_file <- function(file_name, dsn, context='project') {
 
-  conn <- get_connection_object(dsn)
+  conn <- get_db_connection_object(dsn)
 
   # capture query
   if (context == 'project') {
@@ -47,6 +45,23 @@ get_data_from_sql_file <- function(file_name, dsn, context='project') {
   return(df)
 }
 
+#' Get data from a pin stored in RStudio Connect
+#'
+#' @param pin_name The name of the pin, as stored on RStudio Connect instance.
+#'
+#'
+#' @return Data from the requested pin.
+#' @export
+#'
+#'
+get_data_from_pin <- function(pin_name) {
+  pins_board <- get_pins_connection_object()
+  # pull data from the pin
+  pin_data <- pins::pin_read(pins_board, pin_name) %>%
+    mung_dataframe()
+  return(pin_data)
+}
+
 #' Get data from a rds source.
 #'
 #' @param file_name The rds file you want to load
@@ -61,32 +76,6 @@ load_data_from_rds <- function(file_name) {
   return(df)
 }
 
-#' Get data from a pin stored in RStudio Connect
-#'
-#' @param pin_name The name of the pin, as stored on RStudio Connect instance.
-#'
-#'
-#' @return a dataframe containing all data from requested pin
-#' @export
-#'
-#'
-get_data_from_pin <- function(pin_name) {
-  # Obtain the API key from environment variable.
-  api_key <- Sys.getenv("RSCONNECT_SERVICE_USER_API_KEY")
-  # If API key is not available as environment variable, use keyring entry.
-  # NOTE: The API key should only be an environment variable on the server
-  #       For local machines, set a keyring entry.
-  if (api_key == "") {
-    api_key <- keyring::key_get("pins", "api_key")
-  }
-  # Register the connection to the pinning board.
-  pins::board_register_rsconnect(key=api_key, server="https://rs-connect.utahtech.edu/")
-  # pull data from the pin
-  df <- pins::pin_get(pin_name, board="rsconnect") %>%
-    mung_dataframe()
-  return(df)
-}
-
 #' Load data from an Excel spreadsheet formatted file
 #'
 #' @param file_name the name of the file, assumed to be located in a directory called 'data'
@@ -97,6 +86,22 @@ get_data_from_pin <- function(pin_name) {
 #'
 #'
 load_data_from_xlsx <- function(file_name) {
-  df <- readxl::read_excel( here::here('data', file_name) )
+  df <- readxl::read_excel( here::here('data', file_name) ) %>%
+    mung_dataframe()
+  return(df)
+}
+
+#' Load data from a CSV formatted file
+#'
+#' @param file_name the name of the file, assumed to be located in a directory called 'data'
+#'
+#'
+#' @return A dataframe with all content of the CSV file.
+#' @export
+#'
+#'
+load_data_from_csv <- function(file_name) {
+  df <- utils::read.csv( here::here('data', file_name) ) %>%
+    mung_dataframe()
   return(df)
 }

@@ -10,7 +10,7 @@ get_data_from_pin(pin_name)
 \item{pin_name}{The name of the pin, as stored on RStudio Connect instance.}
 }
 \value{
-a dataframe containing all data from requested pin
+Data from the requested pin.
 }
 \description{
 Get data from a pin stored in RStudio Connect
