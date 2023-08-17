@@ -67,6 +67,9 @@ load_data_from_rds <- function(file_name) {
 #'
 #'
 #' @return a dataframe containing all data from requested pin
+#' @importFrom pins board_rsconnect
+#' @importFrom pins pin_read
+#' @importFrom keyring key_get
 #' @export
 #'
 #'
@@ -79,10 +82,16 @@ get_data_from_pin <- function(pin_name) {
   if (api_key == "") {
     api_key <- keyring::key_get("pins", "api_key")
   }
-  # Register the connection to the pinning board.
-  rsconnect <- pins::board_register_rsconnect(key=api_key, server="https://rs-connect.utahtech.edu/")
+  #rsconnect <- board_register_rsconnect(key =api_key, server = "https://rs-connect.utahtech.edu")
+  # Using the new code from Russ.
+  board_rsc = pins::board_rsconnect(
+    auth="manual",
+    account= "rsconnectapi!service",
+    server="https://rs-connect.utahtech.edu",
+    key= api_key)
+
   # pull data from the pin
-  df <- pins::pin_read(pin_name, board=rsconnect) %>%
+  df <- pins::pin_read(pin_name, board=board_rsc) %>%
     mung_dataframe()
   return(df)
 }
