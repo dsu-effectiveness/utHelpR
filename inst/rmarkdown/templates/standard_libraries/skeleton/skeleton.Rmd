@@ -9,11 +9,44 @@ output: output_format
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+standard libraries used 
 ```{r}
-library(tidyverse)
-library(here) 
-library(utHelpR)
-library(utDataStoR)
+library(tidyverse) # a package of packages like dplyR, and other essential packages 
+library(here) # a short cut for the working directory
+library(utHelpR) # a homegrown package with helper functions 
 ```
 
-test this
+libraries for bringing data into a project
+```{r}
+library(readr) # reads rectangle data
+library(readxl) # reads excel data
+library(openxlsx) # works with Excel projects 
+library(googlesheets4) # works with Google sheets
+library(utDataStoR) # brings in standardized sql scripts
+library(janitor) # cleans data from a file to fit R standards
+```
+
+libraries for data manipulation
+```{r}
+library(stringr) # manipulate strings 
+library(rlang) # manipulate objects to and from variables 
+library(scales) # helps with rates and scales
+library(lubridate) # helps with dates
+library(purrr) # allows iterations with list
+```
+
+libraries for presenting data
+```{r}
+# libraries for presenting data
+library(shiny) # makes shiny applications  
+library(gt) # makes tables
+library(DT) # makes tables
+library(kableExtra) # makes html tables 
+library(ggplot2) # makes graphs and charts
+```
+
+libraries used for development
+ library(usethis) 
+ library(devtools) 
+ library(gitcreds)
+
