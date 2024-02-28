@@ -4,25 +4,21 @@
 \alias{uth_clean_student_id}
 \title{uth_clean_student_id}
 \usage{
-uth_clean_student_id(
-  .data,
-  current_column_name,
-  keep_old = FALSE,
-  check_type = FALSE
-)
+uth_clean_student_id(.data, current_column_name, remove_current_name = FALSE)
 }
 \arguments{
 \item{.data}{A dataframe which has a field of student ids which could be numeric or have leading D.}
 
 \item{current_column_name}{This is the original title of field of ids, this must be in quotes "".}
 
-\item{keep_old}{TRUE will keep the original filed in the dataframe. This is defaulted to FALSE.}
-
-\item{check_type}{TRUE will check if the requester_return_field from the national student clearing house is either a slate_id or a banner_id.}
+\item{remove_current_name}{TRUE will remove the original filed in the dataframe. This is defaulted to FALSE.}
 }
 \value{
 A dataframe with student ids to manipulated into a character format without a leading "D", This can also check if a student id is a slate_id or a banner_id if it has leading alpha from nsc house tables
 }
 \description{
 uth_clean_student_id
+}
+\examples{
+NA
 }

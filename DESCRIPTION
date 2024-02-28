@@ -34,7 +34,8 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    tidyverse
+    tidyverse,
+    gt
 URL: https://github.com/dsu-effectiveness/utHelpR
 BugReports: https://github.com/dsu-effectiveness/utHelpR/issues
 Depends: 
