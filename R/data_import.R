@@ -80,7 +80,8 @@ get_data_from_pin <- function(pin_name) {
     api_key <- keyring::key_get("pins", "api_key")
   }
   # Register the connection to the pinning board.
-  rsconnect <- pins::board_register_rsconnect(key=api_key, server="https://rs-connect.utahtech.edu/")
+  #rsconnect <- pins::board_register_rsconnect(key=api_key, server="https://rs-connect.utahtech.edu/")
+  rsconnect <- pins::board_connect(key=api_key, server="https://rs-connect.utahtech.edu/")
   # pull data from the pin
   df <- pins::pin_read(pin_name, board=rsconnect) %>%
     mung_dataframe()
