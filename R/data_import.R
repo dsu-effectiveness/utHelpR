@@ -88,6 +88,33 @@ get_data_from_pin <- function(pin_name) {
   return(df)
 }
 
+#' Get data from a pin stored in the new Posit Connect Server
+#'
+#' @param pin_name The name of the pin, as stored on Posit Connect instance.
+#'
+#'
+#' @return a dataframe containing all data from requested pin
+#' @export
+#'
+#'
+get_data_from_pin2 <- function(pin_name) {
+  # Obtain the API key from environment variable.
+  api_key <- Sys.getenv("RSCONNECT_SERVICE_USER_API_KEY")
+  # If API key is not available as environment variable, use keyring entry.
+  # NOTE: The API key should only be an environment variable on the server
+  #       For local machines, set a keyring entry.
+  if (api_key == "") {
+    api_key <- keyring::key_get("pins", "api_key")
+  }
+  # Register the connection to the pinning board.
+  #rsconnect <- pins::board_register_rsconnect(key=api_key, server="https://rs-connect.utahtech.edu/")
+  rsconnect <- pins::board_connect(key=api_key, server="https://connect.ie.utahtech.edu/")
+  # pull data from the pin
+  df <- pins::pin_read(pin_name, board=rsconnect) %>%
+    mung_dataframe()
+  return(df)
+}
+
 #' Load data from an Excel spreadsheet formatted file
 #'
 #' @param file_name the name of the file, assumed to be located in a directory called 'data'
