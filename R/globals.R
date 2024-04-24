@@ -10,5 +10,6 @@ utils::globalVariables(c(
   "outcome_achieved",
   "outcome_total",
   "positive_outcome",
-  "."
+  ".",
+  "student_id"
 ))

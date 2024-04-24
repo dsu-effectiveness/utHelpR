@@ -1,8 +1,6 @@
 #' uth_clean_student_id
 #'
-#' @param .data A dataframe which has a field of student ids which could be numeric or have leading D.
-#' @param current_column_name This is the original title of field of ids, this must be in quotes "".
-#' @param remove_current_name TRUE will remove the original filed in the dataframe. This is defaulted to FALSE.
+#' @param student_id A student id as a number, email, text with a leading d or D.
 #'
 #' @importFrom dplyr mutate if_else case_when everything
 #' @importFrom stringr str_detect str_starts str_sub str_pad str_remove
@@ -11,12 +9,12 @@
 #' @return A dataframe with student ids to manipulated into a character format without a leading "D", This can also check if a student id is a slate_id or a banner_id if it has leading alpha from nsc house tables
 #' @export
 #'
-#' @examples NA
+uth_clean_student_id <- function(student_id) {
 
-uth_clean_student_id <- function(.data, current_column_name, remove_current_name=FALSE) {
+  student_id <- {{student_id}}
 
-  output_df <- .data %>%
-    dplyr::mutate(student_id = !! rlang::sym(current_column_name)) %>%
+  output_df <- tibble::tibble(
+    student_id = student_id) %>%
     dplyr::mutate(student_id = ifelse(stringr::str_detect(student_id, "@"), stringr::str_sub(student_id,1,8), student_id)) %>%
     dplyr::mutate(student_id = dplyr::case_when(
       is.numeric(student_id) ~ as.character(student_id),
@@ -25,16 +23,6 @@ uth_clean_student_id <- function(.data, current_column_name, remove_current_name
       is.character(student_id) & stringr::str_starts(student_id, "d") ~ stringr::str_remove(student_id, "d"),
       TRUE ~ as.character(student_id))) %>%
     dplyr::mutate(student_id = stringr::str_pad(student_id, 8, "left", "0")) %>%
-    dplyr::select(student_id, dplyr::everything())
-
-  if(remove_current_name==TRUE){
-
-    output_df2 <- output_df %>%
-      dplyr::select(-c(current_column_name))
-
-  } else {
-    output_df2 <- output_df
-  }
-
-  return(output_df2)
+    dplyr::select(student_id) %>%
+    dplyr::pull(student_id)
 }

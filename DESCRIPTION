@@ -30,7 +30,9 @@ Imports:
     usethis,
     tidyr,
     rlang,
-    scales
+    scales,
+    devtools,
+    gitcreds
 Suggests: 
     knitr,
     rmarkdown,
