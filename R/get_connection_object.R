@@ -19,17 +19,14 @@ get_connection_object <- function(dsn) {
   # But these conditionals should trigger on a server.
   # The motivation: It is secure to store this information in a server's DSN entry,
   # but NOT secure to store on a personal machine's DSN entry.
-  if ( dbCanConnect(odbc(), DSN=dsn) ) {
-    conn <- dbConnect(odbc(), DSN=dsn)
-  }
-  else if ( dbCanConnect(Postgres(), DSN=dsn) ) {
-    conn <- dbConnect(Postgres(), DSN=dsn)
+  if ( DBI::dbCanConnect(odbc::odbc(), DSN=dsn) ) {
+    conn <- DBI::dbConnect(odbc::odbc(), DSN=dsn)
   }
   # Local db connection ####
   # These should trigger on a personal machine,
   # assuming all other dependent data io infrastructure is set up properly.
   else if ( dsn == "edify" ) {
-    conn <- dbConnect( Postgres(),
+    conn <- DBI::dbConnect( RPostgres::Postgres(),
                        dbname="analytics",
                        host="utahtech.db.edh.eab.com",
                        port=51071,
@@ -37,7 +34,7 @@ get_connection_object <- function(dsn) {
                        password=key_get("edify", "password") )
   }
   else {
-    conn <- dbConnect( odbc(),
+    conn <- DBI::dbConnect( odbc::odbc(),
                        DSN=dsn,
                        UID=key_get("sis_db", "username"),
                        PWD=key_get("sis_db", "password") )
